@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ImGuiNET;
+using Microsoft.VisualBasic.FileIO;
+using System.Collections.Generic;
 
 namespace Lemegeton.Core
 {
@@ -6,10 +8,33 @@ namespace Lemegeton.Core
     internal static class I18n
     {
 
-        internal static Dictionary<string, Language> RegisteredLanguages = new Dictionary<string, Language>();
+        internal delegate void FontDownloadRequest(Language lang);
+        internal static event FontDownloadRequest OnFontDownload;
 
+        internal static Dictionary<string, Language> RegisteredLanguages = new Dictionary<string, Language>();
         internal static Language DefaultLanguage = null;
-        internal static Language CurrentLanguage = null;
+        private static Language _CurrentLanguage = null;
+        internal static Language CurrentLanguage
+        {
+            get
+            {
+                return _CurrentLanguage;
+            }
+            set
+            {
+                if (value != _CurrentLanguage)
+                {
+                    _CurrentLanguage = value;
+                    if (_CurrentLanguage != null && _CurrentLanguage.Font == null)
+                    {
+                        if (_CurrentLanguage.FontDownload != null && _CurrentLanguage.FontDownloadNecessary == true) 
+                        {
+                            OnFontDownload?.Invoke(_CurrentLanguage);
+                        }
+                    }
+                }
+            }
+        }
 
         internal static void AddLanguage(Language ld)
         {
@@ -17,29 +42,16 @@ namespace Lemegeton.Core
             {
                 DefaultLanguage = ld;
             }
-            if (RegisteredLanguages.ContainsKey(ld.LanguageName) == true)
+            RegisteredLanguages[ld.LanguageName] = ld;
+            if (_CurrentLanguage == null)
             {
-                string basename = ld.LanguageName;
-                for (int i = 2; ; i++)
-                {
-                    string curname = basename + " #" + i;
-                    if (RegisteredLanguages.ContainsKey(curname) == true)
-                    {
-                        continue;
-                    }
-                    ld.LanguageName = curname;
-                    RegisteredLanguages[curname] = ld;
-                    break;
-                }
+                _CurrentLanguage = ld;
             }
-            else
-            {
-                RegisteredLanguages[ld.LanguageName] = ld;
-            }
-            if (CurrentLanguage == null)
-            {
-                CurrentLanguage = ld;
-            }
+        }
+
+        internal static ImFontPtr? GetFont()
+        {
+            return CurrentLanguage != null ? CurrentLanguage.Font : DefaultLanguage.Font;
         }
 
         internal static string Translate(string key, params object[] args)
@@ -55,6 +67,7 @@ namespace Lemegeton.Core
         {
             if (langname == null)
             {
+                _CurrentLanguage = null;
                 CurrentLanguage = DefaultLanguage;
                 return true;
             }
@@ -62,11 +75,13 @@ namespace Lemegeton.Core
             {
                 if (RegisteredLanguages.ContainsKey(langname) == true)
                 {
+                    _CurrentLanguage = null;
                     CurrentLanguage = RegisteredLanguages[langname];
                     return true;
                 }
                 else
                 {
+                    _CurrentLanguage = null;
                     CurrentLanguage = DefaultLanguage;
                     return false;
                 }

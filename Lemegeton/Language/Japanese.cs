@@ -1,25 +1,45 @@
-﻿namespace Lemegeton.Language
+﻿using Lemegeton.Core;
+
+namespace Lemegeton.Language
 {
 
     internal class Japanese : Core.Language
     {
 
-        public Japanese()
+        public override bool IsDefault => false;
+        public override string LanguageName => "日本語";
+        public override bool FontDownloadNecessary => false;
+        public override string FontDownload => null;
+        public override GlyphRangeEnum GlyphRange => GlyphRangeEnum.Undefined;
+
+        public Japanese(State st) : base(st)
         {
-            IsDefault = false;
-            LanguageName = "日本語";
-            //AddEntry("Command/QuickToggleAutomarkers/On", "Lemegeton: Automarkers are now enabled.");
-            //AddEntry("Command/QuickToggleAutomarkers/Off", "Lemegeton: Automarkers are now disabled.");
-            //AddEntry("Command/QuickToggleOverlays/On", "Lemegeton: Draws and overlays are now enabled.");
-            //AddEntry("Command/QuickToggleOverlays/Off", "Lemegeton: Draws and overlays are now disabled.");
-            //AddEntry("Command/QuickToggleSound/On", "Lemegeton: Sound features are now enabled.");
-            //AddEntry("Command/QuickToggleSound/Off", "Lemegeton: Sound features are now disabled.");
-            //AddEntry("Command/QuickToggleHacks/On", "Lemegeton: Hacks and game-altering features are now enabled.");
-            //AddEntry("Command/QuickToggleHacks/Off", "Lemegeton: Hacks and game-altering features are now disabled.");
-            //AddEntry("Command/QuickToggleAutomation/On", "Lemegeton: Automation features are now enabled.");
-            //AddEntry("Command/QuickToggleAutomation/Off", "Lemegeton: Automation features are now disabled.");
-            //AddEntry("Command/AutomarkerSoft/On", "Lemegeton: Client-side soft automarkers are now enabled.");
-            //AddEntry("Command/AutomarkerSoft/Off", "Lemegeton: Client-side soft automarkers are now disabled.");
+            #region 1.0.1.0
+            // do not translate yet please - feature still in development and these may change!
+            //AddEntry("MainMenu/Timelines", "Timelines");
+            //AddEntry("MainMenu/Timelines/Timelines", "Timelines");
+            //AddEntry("MainMenu/Timelines/Overlay", "Overlay");
+            //AddEntry("MainMenu/Timelines/Recorder", "Recorder");
+            //AddEntry("Timelines/Timeline", "Timeline");
+            //AddEntry("Timelines/Profile", "Profile");
+            //AddEntry("MainMenu/Timelines/SaveProfile", "Save profile");
+            //AddEntry("MainMenu/Timelines/SaveNewProfileAs", "Save new profile as..");
+            //AddEntry("MainMenu/Timelines/CloneProfile", "Clone profile");
+            //AddEntry("MainMenu/Timelines/DeleteProfile", "Delete profile");
+            #endregion
+            #region <1.0.1.0
+            AddEntry("Command/QuickToggleAutomarkers/On", "Lemegeton: オートマーカーを有効にしました。");
+            AddEntry("Command/QuickToggleAutomarkers/Off", "Lemegeton: オートマーカーを無効にしました。");
+            AddEntry("Command/QuickToggleOverlays/On", "Lemegeton: 描画とオーバーレイを有効にしました。");
+            AddEntry("Command/QuickToggleOverlays/Off", "Lemegeton: 描画とオーバーレイを無効にしました。");
+            AddEntry("Command/QuickToggleSound/On", "Lemegeton: サウンド機能を有効にしました。");
+            AddEntry("Command/QuickToggleSound/Off", "Lemegeton: サウンド機能を無効にしました。");
+            AddEntry("Command/QuickToggleHacks/On", "Lemegeton: ハックとゲーム改変機能を有効にしました。");
+            AddEntry("Command/QuickToggleHacks/Off", "Lemegeton: ハックとゲーム改変機能を無効にしました。");
+            AddEntry("Command/QuickToggleAutomation/On", "Lemegeton: 自動化機能を有効にしました。");
+            AddEntry("Command/QuickToggleAutomation/Off", "Lemegeton: 自動化機能を無効にしました。");
+            AddEntry("Command/AutomarkerSoft/On", "Lemegeton: クライアントサイドのソフトオートマーカーを有効にしました。");
+            AddEntry("Command/AutomarkerSoft/Off", "Lemegeton: クライアントサイドのソフトオートマーカーを無効にしました。");
             AddEntry("Status/AtAGlance", "一覧");
             AddEntry("Status/CurrentlyActive", "現在有効な機能");
             AddEntry("Status/ImpactToFunctionality", "機能への影響");
@@ -671,6 +691,7 @@
             AddEntry("Content/Ultimate/UltOmegaProtocol/DynamisOmegaDrawBossMonitor/Enabled", "有効");
             AddEntry("Content/Ultimate/UltOmegaProtocol/DynamisOmegaDrawBossMonitor/HighlightColor", "表示色");
             AddEntry("Content/Ultimate/UltOmegaProtocol/DynamisOmegaDrawBossMonitor/Test", "オーバーレイのテスト");
+            #endregion
         }
 
     }
